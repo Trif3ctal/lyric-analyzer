@@ -1,0 +1,14 @@
+{
+  "name": "lyric-analyzer",
+  "version": "1.0.0",
+  "description": "Song lyric analyzer made for hackclub's Neighborhood challenge",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Xavier Torrescano",
+  "license": "MIT",
+  "dependencies": {
+    "create-react-app": "^5.1.0"
+  }
+}
