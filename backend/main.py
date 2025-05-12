@@ -4,10 +4,10 @@
 
 import os
 import tempfile
-from flask import request, jsonify, send_from_directory
+import spacy
+from flask import request, jsonify
 from werkzeug.utils import secure_filename
-from config import app, db
-from models import Lyrics
+from config import app
 
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), 'instance', 'uploads')
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -24,15 +24,24 @@ def upload_file():
 
     try:
         with tempfile.NamedTemporaryFile(delete=False, dir=UPLOAD_FOLDER) as temp_file:
+            nlp = spacy.load("en_core_web_sm")
+            
             file.save(temp_file.name)
             filename = secure_filename(file.filename)
             temp_file.seek(0)
             content = temp_file.read().decode('utf-8')
+            word_count = len(content.split())
+            line_count = len(content.splitlines())
+            no_space = content.replace('\n', ' ')
+            spacy_content = no_space.replace('\r', ' ')
+            doc = nlp(spacy_content)
+            print([chunk.text for chunk in doc.noun_chunks])
+            nouns = len([chunk.text for chunk in doc.noun_chunks])
 
-        # Delete the temporary file after reading its content
+        # delete the temporary file after reading its content
         os.remove(temp_file.name)
 
-        return jsonify({"filename": filename, "content": content}), 200
+        return jsonify({"filename": filename, "content": content, "wordCount": word_count, "lineCount": line_count, "nouns": nouns}), 200
 
     except Exception as e:
         return jsonify({"message": f"An error occurred while uploading the file: {str(e)}"}), 500
