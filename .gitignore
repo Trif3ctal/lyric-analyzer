@@ -2,6 +2,7 @@
 backend/venv/
 __pycache__/
 *.pyc
+backend/instance/uploads/
 
 # Node.js
 frontend/node_modules/
@@ -10,3 +11,4 @@ frontend/build/
 # General
 .DS_Store
 .env
+lyric analyzer.code-workspace
