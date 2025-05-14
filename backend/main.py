@@ -35,13 +35,13 @@ def upload_file():
             no_space = content.replace('\n', ' ')
             spacy_content = no_space.replace('\r', ' ')
             doc = nlp(spacy_content)
-            print([chunk.text for chunk in doc.noun_chunks])
-            nouns = len([chunk.text for chunk in doc.noun_chunks])
+            nouns = [token.text.lower() for token in doc if token.pos_ == "NOUN"]
+            verbs = [token.text.lower() for token in doc if token.pos_ == "VERB"]
 
         # delete the temporary file after reading its content
         os.remove(temp_file.name)
 
-        return jsonify({"filename": filename, "content": content, "wordCount": word_count, "lineCount": line_count, "nouns": nouns}), 200
+        return jsonify({"filename": filename, "content": content, "wordCount": word_count, "lineCount": line_count, "nouns": ", ".join(nouns), "verbs": ", ".join(verbs)}), 200
 
     except Exception as e:
         return jsonify({"message": f"An error occurred while uploading the file: {str(e)}"}), 500

@@ -6,6 +6,7 @@ function App() {
     const [wordCount, setWordCount] = useState(0);
     const [lineCount, setLineCount] = useState(0);
     const [nouns, setNouns] = useState(0);
+    const [verbs, setVerbs] = useState(0);
     const [isLoading, setIsLoading] = useState(false); // Loading state
     const [message, setMessage] = useState(""); // Success/error message
 
@@ -31,6 +32,7 @@ function App() {
                 setWordCount(data.wordCount);
                 setLineCount(data.lineCount);
                 setNouns(data.nouns);
+                setVerbs(data.verbs);
                 setMessage("File uploaded successfully!");
             } else {
                 const errorText = await response.text();
@@ -47,7 +49,7 @@ function App() {
 
     return (
         <div className="app-container">
-            <h1>Lyric Analyzer</h1>
+            <h1>EmceeEval</h1>
             <div className="upload-section">
                 <label className="file-input-label">
                     <input type="file" accept=".txt" onChange={handleFileUpload} hidden />
@@ -62,7 +64,14 @@ function App() {
                     <pre>{fileContent}</pre>
                     <h3>Word Count: {wordCount}</h3>
                     <h3>Line Count: {lineCount}</h3>
-                    <h3># of Nouns: {nouns}</h3>
+                    <details>
+                        <summary>Used Nouns...</summary>
+                        <p>{nouns}</p>
+                    </details>
+                    <details>
+                        <summary>Used Verbs...</summary>
+                        <p>{verbs}</p>
+                    </details>
                 </div>
             )}
         </div>
