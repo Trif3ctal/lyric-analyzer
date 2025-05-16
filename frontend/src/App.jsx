@@ -50,7 +50,7 @@ function App() {
         }
     };
 
-    const handleAnalyzeText = async (text) => {
+    const handleAnalyzeText = async (e) => {
         if (!userLyrics.trim()) {
             setMessage("Please enter lyrics.");
             return;
