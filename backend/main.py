@@ -41,6 +41,10 @@ def upload_file():
                      for token in doc if token.pos_ == "NOUN"]
             verbs = [token.text.lower()
                      for token in doc if token.pos_ == "VERB"]
+            if not nouns:
+                nouns = "No nouns found."
+            if not verbs:
+                verbs = "No verbs found."
             last_word = content.split()[-1]
             rhymes_list = pronouncing.rhymes(last_word)
             if not rhymes_list:
