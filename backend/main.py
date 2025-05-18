@@ -15,6 +15,22 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 
+def get_last_words_rhymes(content):
+    lines = [line for line in content.splitlines() if line.strip()]
+    last_words = []
+    for line in lines:
+        words = line.strip().split()
+        if words:
+            last_word = words[-1]
+            last_words.append(last_word)
+    rhyme_pairs = []
+    for i in range(len(last_words) - 1):
+        for j in range(i + 1, len(last_words)):
+            if last_words[j] in pronouncing.rhymes(last_words[i]):
+                rhyme_pairs.append((last_words[i], last_words[j]))
+    return rhyme_pairs
+
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -45,12 +61,14 @@ def upload_file():
                 nouns = "No nouns found."
             if not verbs:
                 verbs = "No verbs found."
-            last_word = content.split()[-1]
-            rhymes_list = pronouncing.rhymes(last_word)
-            if not rhymes_list:
+
+            # Get last words and their rhymes
+            last_words_rhymes = get_last_words_rhymes(content)
+            if not last_words_rhymes:
                 rhymes_list = "No rhymes found."
             else:
-                rhymes_list = ", ".join(rhymes_list)
+                rhymes_list = ", ".join(
+                    [f"{pair[0]}: {pair[1]}" for pair in last_words_rhymes])
 
             def grade_rhymes():
                 rhyme_score = 0
@@ -78,6 +96,8 @@ def upload_file():
             "nouns": ", ".join(nouns),
             "verbs": ", ".join(verbs),
             "rhymes_last": rhymes_list,
+            "rhyme_score": grade_rhymes(),
+            "rhyme_pairs": rhymes_list.replace(", ", "\n"),
         }), 200
 
     except Exception as e:
