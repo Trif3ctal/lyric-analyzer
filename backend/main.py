@@ -52,6 +52,21 @@ def upload_file():
             else:
                 rhymes_list = ", ".join(rhymes_list)
 
+            def grade_rhymes():
+                rhyme_score = 0
+                if word_count > 500:
+                    rhyme_score += 1
+                if line_count > 30:
+                    rhyme_score += 1
+
+                if rhyme_score == 0:
+                    rhyme_score = "D+"
+                elif rhyme_score == 1:
+                    rhyme_score = "B"
+                elif rhyme_score == 2:
+                    rhyme_score = "A"
+                return rhyme_score
+
         # delete the temporary file after reading its content
         os.remove(temp_file.name)
 
@@ -93,6 +108,20 @@ def analyze_text():
         else:
             rhymes_list = ", ".join(rhymes_list)
 
+        def grade_rhymes():
+            rhyme_score = 0
+            if word_count > 500:
+                rhyme_score += 1
+            if line_count > 30:
+                rhyme_score += 1
+
+            if rhyme_score == 0:
+                rhyme_score = "D+"
+            elif rhyme_score == 1:
+                rhyme_score = "B"
+            elif rhyme_score == 2:
+                rhyme_score = "A"
+            return rhyme_score
 
         return jsonify({
             "filename": None,
@@ -102,6 +131,7 @@ def analyze_text():
             "nouns": ", ".join(nouns),
             "verbs": ", ".join(verbs),
             "rhymes_last": rhymes_list,
+            "rhyme_score": grade_rhymes(),
         }), 200
 
     except Exception as e:

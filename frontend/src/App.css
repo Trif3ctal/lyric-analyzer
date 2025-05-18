@@ -118,3 +118,9 @@ details > p {
     padding: 10px;
     background-color: #e6e6e6;
 }
+
+.rhyme-score {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #007bff;
+}

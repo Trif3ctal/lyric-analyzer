@@ -9,6 +9,7 @@ function App() {
     const [nouns, setNouns] = useState(0);
     const [verbs, setVerbs] = useState(0);
     const [rhymes_last, setRhymesLast] = useState("");
+    const [rhymeScore, setRhymeScore] = useState("");
     const [isLoading, setIsLoading] = useState(false); // Loading state
     const [message, setMessage] = useState(""); // Success/error message
 
@@ -36,6 +37,7 @@ function App() {
                 setNouns(data.nouns);
                 setVerbs(data.verbs);
                 setRhymesLast(data.rhymes_last);
+                setRhymeScore(data.rhyme_score);
                 setMessage("File uploaded successfully!");
             } else {
                 const errorText = await response.text();
@@ -74,6 +76,7 @@ function App() {
                 setNouns(data.nouns);
                 setVerbs(data.verbs);
                 setRhymesLast(data.rhymes_last);
+                setRhymeScore(data.rhyme_score);
                 setMessage("Text analyzed successfully!");
             } else {
                 const errorText = await response.text();
@@ -123,6 +126,8 @@ function App() {
                         <summary>Words that rhyme with your last used word...</summary>
                         <p>{rhymes_last}</p>
                     </details>
+                    <h3>Total Rhyme Score:</h3>
+                    <p className="rhyme-score">{rhymeScore}</p>
                 </div>
             )}
         </div>
